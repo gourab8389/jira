@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="flex gap-4">
       <h1>Home</h1>
-      <Button variant={"destructive"}>Click Me</Button>
+      <Button variant={"muted"}>Click Me</Button>
     </div>
   )
 }
