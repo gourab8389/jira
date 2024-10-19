@@ -5,6 +5,7 @@ import { DottedSeparator } from "@/components/shared/dotted-separator"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import Link from "next/link";
 
 
 export const SignUpCard = () => {
@@ -15,7 +16,17 @@ export const SignUpCard = () => {
             Sign Up here
         </CardTitle>
         <CardDescription>
-            
+            By signing up, you agree to our{" "}
+
+            <Link href="/privacy">
+            <span className="text-blue-700">Privicy Policy</span>
+            </Link>{" "}
+            and{" "}
+            <Link href="/terms">
+            <span className="text-blue-700">
+                Terms of Services
+            </span>
+            </Link>
         </CardDescription>
       </CardHeader>
       <div className="px-7">
@@ -25,10 +36,18 @@ export const SignUpCard = () => {
         <form className="space-y-4">
             <Input
             required
+            type="text"
+            value={""}
+            onChange={() => {}}
+            placeholder="Enter your Name"
+            disabled={false}
+            />
+            <Input
+            required
             type="email"
             value={""}
             onChange={() => {}}
-            placeholder="Enter email dddress"
+            placeholder="Enter your email"
             disabled={false}
             />
             <Input
@@ -42,7 +61,7 @@ export const SignUpCard = () => {
             max={256}
             />
             <Button disabled={false} size={"lg"} className="w-full">
-                Login
+                Register here
             </Button>
         </form>
       </CardContent>
