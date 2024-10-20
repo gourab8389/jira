@@ -10,8 +10,12 @@ const app = new Hono().post(
     "json",
     loginSchema
   ),
-  (c) => {
-    return c.json({ success: 123 });
+  async (c) => {
+    const { email, password } = c.req.valid("json");
+
+    console.log({ email, password })
+
+    return c.json({ email, password });
   }
 );
 export default app;
