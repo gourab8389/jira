@@ -19,7 +19,17 @@ import { AUTH_COOKIE } from "@/features/auth/constants";
 import { error } from "console";
 
 
-export const sessionMiddleware = createMiddleware(
+type AdditionalContext = {
+    Variables: {
+        account : AccountType;
+        databases: DatabasesType;
+        storage: StorageType;
+        users: UsersType;
+        user: Models.User<Models.Preferences>;
+    }
+}
+
+export const sessionMiddleware = createMiddleware<AdditionalContext>(
     async (c, next) => {
         const client = new Client()
         .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
@@ -44,5 +54,7 @@ export const sessionMiddleware = createMiddleware(
         c.set("databases", databases);
         c.set("storage", storage);
         c.set("user", user);
+
+        await next();
     },
 )
