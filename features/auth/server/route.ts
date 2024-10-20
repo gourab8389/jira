@@ -11,7 +11,7 @@ const app = new Hono().post(
     loginSchema
   ),
   (c) => {
-    return c.json({ success: "ok" });
+    return c.json({ success: 123 });
   }
 );
 export default app;
