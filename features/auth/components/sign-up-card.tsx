@@ -12,23 +12,25 @@ import Link from "next/link";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 
 import { registerSchema } from "../schemas";
+import { useRegister } from "../api/use-register";
 
 
 
 export const SignUpCard = () => {
 
+  const { mutate } = useRegister();
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      name: " ",
+      name: "",
       email: "",
       password: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof registerSchema>) => {
-    console.log({ values })
+    mutate({ json: values })
   }
 
   return (
@@ -69,7 +71,7 @@ export const SignUpCard = () => {
                     <Input
                       {...field}
                       type="text"
-                      placeholder="Enter your name"
+                      placeholder="Enter your Name"
                       disabled={false}
                     />
                   </FormControl>
