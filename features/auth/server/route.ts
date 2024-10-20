@@ -7,6 +7,7 @@ import { createAdminClient } from "@/lib/appwrite";
 
 
 import { loginSchema, registerSchema } from "../schemas";
+import { AUTH_COOKIE } from "../constants";
 
 const app = new Hono().post(
   "/login",
@@ -41,9 +42,15 @@ const app = new Hono().post(
       password,
     )
 
-    // setCookie(c, "")
+    setCookie(c, AUTH_COOKIE, session.secret, {
+      path: "/",
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 60 * 60 * 24 * 30,
+    });
 
-    return c.json({ name, email, password });
+    return c.json({ data: user });
   }
 )
 export default app;
