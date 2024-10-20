@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { ID } from "node-appwrite";
-import { setCookie } from "hono/cookie";
+import { deleteCookie, setCookie } from "hono/cookie";
 import { zValidator } from "@hono/zod-validator";
 
 import { createAdminClient } from "@/lib/appwrite";
@@ -18,9 +18,21 @@ const app = new Hono().post(
   async (c) => {
     const { email, password } = c.req.valid("json");
 
-    console.log({ email, password })
+    const { account } = await createAdminClient();
+    const session = await account.createEmailPasswordSession(
+      email,
+      password
+    );
 
-    return c.json({ email, password });
+    setCookie(c, AUTH_COOKIE, session.secret, {
+      path: "/",
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+
+    return c.json({ success: true });
   }
 )
 .post(
@@ -30,7 +42,7 @@ const app = new Hono().post(
     const { name, email, password } = c.req.valid("json");
 
     const { account } = await createAdminClient();
-    const user = await account.create(
+    await account.create(
       ID.unique(),
       email,
       password,
@@ -50,7 +62,14 @@ const app = new Hono().post(
       maxAge: 60 * 60 * 24 * 30,
     });
 
-    return c.json({ data: user });
+    return c.json({ success: true });
   }
 )
+.post("/logout", (c) => {
+  deleteCookie(c, AUTH_COOKIE);
+
+  return c.json({ success: true })
+})
+
+
 export default app;
