@@ -16,7 +16,6 @@ import { getCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
 
 import { AUTH_COOKIE } from "@/features/auth/constants";
-import { error } from "console";
 
 
 type AdditionalContext = {
@@ -34,7 +33,6 @@ export const sessionMiddleware = createMiddleware<AdditionalContext>(
         const client = new Client()
         .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
         .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
-        .setKey(process.env.NEXT_APPWRITE_KEY!);
 
         const session = getCookie(c, AUTH_COOKIE);
 
