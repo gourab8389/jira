@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import { useLogout } from "@/features/auth/api/use-logout";
 import { useCurrent } from "@/features/auth/api/use-current";
-import { Button } from "@/components/ui/button";
+import { UserButton } from "@/features/auth/components/user-button";
 
 export default function Home() {
 const router = useRouter();
@@ -19,10 +19,7 @@ const { mutate } = useLogout();
 
   return (
     <div>
-      Only visible 
-      <Button onClick={() => mutate()}>
-        Logout
-      </Button>
+      <UserButton/>
     </div>
   )
 }
