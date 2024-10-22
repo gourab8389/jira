@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { DottedSeparator } from "../shared/dotted-separator";
+import { Navigation } from "./navigation";
 
 export const Sidebar = () => {
     return (
@@ -9,7 +10,7 @@ export const Sidebar = () => {
                 <Image src={"/logo.svg"} alt="logo" width={48} height={24}/>
             </Link>
             <DottedSeparator className="my-4"/>
-
+            <Navigation/>
         </aside>
     );
 };
