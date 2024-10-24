@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 
-import { DATABASE_ID, IMAGES_BUCKET_ID, WORKSPACES_ID } from "@/config";
+import { DATABASE_ID, IMAGES_BUCKET_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 
 import { sessionMiddleware } from "@/lib/session-middleware";
 
@@ -47,7 +47,7 @@ const app = new Hono()
             uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
         }
 
-        const workspaces = await databases.createDocument(
+        const workspace = await databases.createDocument(
             DATABASE_ID,
             WORKSPACES_ID,
             ID.unique(),
@@ -58,7 +58,19 @@ const app = new Hono()
             },
         );
 
-        return c.json({ data: workspaces });
+
+        await databases.createDocument(
+            DATABASE_ID,
+            MEMBERS_ID,
+            ID.unique(),
+            {
+                userId: user.$id,
+                workspaceId: workspace.$id,
+                role: "ADMIN"
+            },
+        );
+
+        return c.json({ data: workspace });
     }
 );
 
