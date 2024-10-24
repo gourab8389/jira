@@ -1,4 +1,4 @@
-import  Image  from "next/image";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
@@ -18,11 +18,29 @@ export const WorkspaceAvatar = ({
     name,
     className
 }: WorkspaceAvatarProps) => {
-    if(image){
+    if (image) {
         return (
-            <div className="">
-                <Image src={image} alt={"avatar"} />
+            <div 
+            className={cn("size-10 rounded-md relative overflow-hidden", className)}>
+                <Image
+                    src={image}
+                    alt={name}
+                    fill
+                    className="object-cover"
+                />
             </div>
-        )
-    }
-}
+        );
+    };
+
+    return (
+        <Avatar
+            className={cn("size-10 rounded-md", className)}
+        >
+            <AvatarFallback
+                className="text-white bg-blue-600 font-semibold text-lg uppercase rounded-md"
+            >
+                {name[0]}
+            </AvatarFallback>
+        </Avatar>
+    );
+};
