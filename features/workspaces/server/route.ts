@@ -1,12 +1,14 @@
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
+import { ID } from "node-appwrite";
+import { zValidator } from "@hono/zod-validator";
+
+import { MemberRole } from "@/features/members/types";
 
 import { DATABASE_ID, IMAGES_BUCKET_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 
 import { sessionMiddleware } from "@/lib/session-middleware";
 
 import { createWorkspaceSchema } from "../schemas";
-import { ID } from "node-appwrite";
 
 const app = new Hono()
 .get("/", sessionMiddleware, async (c) => {
@@ -66,7 +68,7 @@ const app = new Hono()
             {
                 userId: user.$id,
                 workspaceId: workspace.$id,
-                role: "ADMIN"
+                role: MemberRole.ADMIN,
             },
         );
 
