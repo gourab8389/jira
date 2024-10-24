@@ -57,7 +57,7 @@ export const CreateWorkspaceForm = ({ onCancel }: createWorkspaceFormProps) => {
     if(file){
         form.setValue("image", file);
     }
-  }
+  };
 
   return (
     <Card className="w-full h-full border-none shadow-none">
