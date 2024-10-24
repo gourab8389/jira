@@ -5,6 +5,7 @@ import { zValidator } from "@hono/zod-validator";
 import { MemberRole } from "@/features/members/types";
 
 import { DATABASE_ID, IMAGES_BUCKET_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
+import { generateInviteCode } from "@/lib/utils";
 
 import { sessionMiddleware } from "@/lib/session-middleware";
 
@@ -66,6 +67,9 @@ const app = new Hono()
             uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
         }
 
+
+        
+
         const workspace = await databases.createDocument(
             DATABASE_ID,
             WORKSPACES_ID,
@@ -74,6 +78,7 @@ const app = new Hono()
                 name,
                 userId: user.$id,
                 imageUrl: uploadedImageUrl,
+                inviteCode: generateInviteCode(6)
             },
         );
 
