@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 
 export const WorkspaceSwitcher = () => {
-    const { data } = useGetWorkspaces();
+    const { data: workspaces } = useGetWorkspaces();
     return (
         <div className="flex flex-col gap-y-2">
             <div className="flex items-center justify-between">
@@ -23,6 +23,16 @@ export const WorkspaceSwitcher = () => {
                 <SelectTrigger className="w-full bg-neutral-200 font-medium p-1">
                     <SelectValue placeholder="No workspaces slected"/>
                 </SelectTrigger>
+                <SelectContent>
+                    {workspaces?.documents.map((workspace) => (
+                        <SelectItem 
+                        key={workspace.$id} 
+                        value={workspace.$id}
+                        >
+                            {workspace.name}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
             </Select>
         </div>
     )
