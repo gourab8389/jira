@@ -9,7 +9,7 @@ import { generateInviteCode } from "@/lib/utils";
 
 import { sessionMiddleware } from "@/lib/session-middleware";
 
-import { createWorkspaceSchema } from "../schemas";
+import { createWorkspaceSchema, updateWorkspaceSchema } from "../schemas";
 
 const app = new Hono()
 .get("/", sessionMiddleware, async (c) => {
@@ -96,6 +96,21 @@ const app = new Hono()
 
         return c.json({ data: workspace });
     }
-);
+)
+.patch(
+    "/:workspaceId",
+    sessionMiddleware,
+    zValidator("form", updateWorkspaceSchema),
+    async (c) => {
+        const databases = c.get("databases");
+        const storage = c.get("storage")
+        const user = c.get("user"); 
+
+        const {} = c.req.param();
+        const { name, image } = c.req.valid("form");
+
+        const member = null;
+    }
+)
 
 export default app;
