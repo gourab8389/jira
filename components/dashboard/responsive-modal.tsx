@@ -17,3 +17,20 @@ interface ResponsiveModalProps {
     onOpenChange: (open: boolean) => void;
 }
 
+export const ResponsiveModal = ({ children, open, onOpenChange }: ResponsiveModalProps) => {
+    const isMobile = useMedia("(max-width: 768px)");
+
+    return isMobile ? (
+        <Drawer open={open} onOpenChange={onOpenChange}>
+            <DrawerContent>
+                {children}
+            </DrawerContent>
+        </Drawer>
+    ) : (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent>
+                {children}
+            </DialogContent>
+        </Dialog>
+    );
+};
