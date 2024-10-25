@@ -23,34 +23,39 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-import { createWorkspaceSchema } from "../schemas";
+import { updateWorkspaceSchema } from "../schemas";
 import { useCreateWorkspace } from "../api/use-create-workspace";
+import { Workspace } from "../types";
 
 interface editWorkspaceFormProps {
   onCancel?: () => void;
-  initialValues: any;
+  initialValues: Workspace;
 }
 
-export const EditWorkspaceForm = ({ onCancel }: editWorkspaceFormProps) => {
+export const EditWorkspaceForm = ({ onCancel, initialValues }: editWorkspaceFormProps) => {
 
   const router = useRouter();
   const { mutate, isPending } = useCreateWorkspace();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const form = useForm<z.infer<typeof createWorkspaceSchema>>({
-    resolver: zodResolver(createWorkspaceSchema),
+  const form = useForm<z.infer<typeof updateWorkspaceSchema>>({
+    resolver: zodResolver(updateWorkspaceSchema),
     defaultValues: {
-      name: "",
+      ...initialValues,
+      image: initialValues.imageUrl ?? "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof createWorkspaceSchema>) => {
+  const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
     const finalValues = {
         ...values,
-        image: values.image instanceof File ? values.image : "",
+        image: values.image instanceof File ? values.image : undefined,
     }
-    mutate({ form: finalValues }, {
+    mutate({
+       form: finalValues,
+       param: {workspaceId: initialValues.$id} 
+      }, {
         onSuccess: ({ data }) => {
             form.reset();
             router.push(`/workspaces/${data.$id}`)
@@ -69,7 +74,7 @@ export const EditWorkspaceForm = ({ onCancel }: editWorkspaceFormProps) => {
     <Card className="w-full h-full border-none shadow-none">
       <CardHeader className="flex p-7">
         <CardTitle className="text-xl font-bold">
-          Create a new workspace
+          {initialValues.name}
         </CardTitle>
       </CardHeader>
       <div className="px-7">
