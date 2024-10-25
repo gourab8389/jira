@@ -1,4 +1,5 @@
 import { getCurrent } from "@/features/auth/actions"
+import { EditWorkspaceForm } from "@/features/workspaces/components/edit-workspace-form";
 import { redirect } from "next/navigation";
 
 
@@ -18,7 +19,7 @@ const WorkspaceIdSettingsPage = async ({
 
   return (
     <div>
-      Workspace id settings page : {params.workspaceId}
+      <EditWorkspaceForm />
     </div>
   )
 }
