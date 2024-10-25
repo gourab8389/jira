@@ -3,7 +3,7 @@
 import { Account, Client, Databases, Query } from "node-appwrite";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE } from "@/features/auth/constants";
-import { DATABASE_ID, MEMBERS_ID } from "@/config";
+import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 
 
 
@@ -16,7 +16,7 @@ export const getWrokspaces = async () => {
 
     const session = await cookies().get(AUTH_COOKIE);
     
-    if(!session) return null;
+    if(!session) return {documents: [], total: 0 };
 
     client.setSession(session.value);
     const databases = new Databases(client);
@@ -30,7 +30,7 @@ export const getWrokspaces = async () => {
     );
 
     if(members.total === 0){
-        return c.json({ data: {documents: [], total: 0 } })
+        return {documents: [], total: 0 } 
     }
 
     const workspaceIds = members.documents.map((member) => member.workspaceId);
@@ -44,9 +44,11 @@ export const getWrokspaces = async () => {
         ]
     );
 
+    return workspaces;
+
     
     } catch {
-        return null;
+        return {documents: [], total: 0 };
     }
 
 }
