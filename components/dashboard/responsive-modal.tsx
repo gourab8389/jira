@@ -28,7 +28,16 @@ export const ResponsiveModal = ({ children, open, onOpenChange }: ResponsiveModa
                     {children}
                 </DialogContent>
             </Dialog>
-        )
-    }
+        );
+    };
+
+
+    return (
+        <Drawer open={open} onOpenChange={onOpenChange}>
+            <DrawerContent className="overflow-y-auto hide-scrollbar max-h-[85vh]">
+                {children}
+            </DrawerContent>         
+        </Drawer>
+    );
 };
 
