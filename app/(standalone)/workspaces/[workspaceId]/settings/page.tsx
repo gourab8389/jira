@@ -1,4 +1,5 @@
 import { getCurrent } from "@/features/auth/actions"
+import { getWrokspace } from "@/features/workspaces/actions";
 import { EditWorkspaceForm } from "@/features/workspaces/components/edit-workspace-form";
 import { redirect } from "next/navigation";
 
@@ -17,9 +18,16 @@ const WorkspaceIdSettingsPage = async ({
     if(!user) redirect("/sign-in");
 
 
+    const initialValues = await getWrokspace({ workspaceId: params.workspaceId });
+
+    if(!initialValues){
+        redirect(`/workspaces/${params.workspaceId}`)
+    }
+
+
   return (
     <div>
-      <EditWorkspaceForm />
+      <EditWorkspaceForm initialValues={initialValues}/>
     </div>
   )
 }

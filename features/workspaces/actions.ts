@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { AUTH_COOKIE } from "@/features/auth/constants";
 import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 import { getMember } from "../members/utils";
+import { Workspace } from "./types";
 
 
 
@@ -87,7 +88,7 @@ export const getWrokspace = async (
         return null;
     }
 
-    const workspace = await databases.getDocument(
+    const workspace = await databases.getDocument<Workspace>(
         DATABASE_ID,
         WORKSPACES_ID,
         workspaceId,
