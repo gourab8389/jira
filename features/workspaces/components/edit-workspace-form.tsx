@@ -141,7 +141,24 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: editWorkspaceForm
                         onChange={handleImageChange}
                         disabled={isPending}
                         />
+                        {                          field.value ? (
                         <Button
+                        type="button"
+                        disabled={isPending}
+                        variant={"destructive"}
+                        size={"xs"}
+                        className="w-fit mt-2"
+                        onClick={() => {
+                          field.onChange(null);
+                          if(inputRef.current){
+                            inputRef.current.value = "";
+                          }
+                        }}
+                        >
+                            Remove Image
+                        </Button>
+                          ) : (
+                            <Button
                         type="button"
                         disabled={isPending}
                         variant={"teritary"}
@@ -151,6 +168,8 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: editWorkspaceForm
                         >
                             Upload Image
                         </Button>
+                          )
+                        }
                       </div>
                     </div>
                   </div>
