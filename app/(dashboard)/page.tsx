@@ -1,5 +1,5 @@
 import { getCurrent } from "@/features/auth/queries";
-import { getWrokspaces } from "@/features/workspaces/actions";
+import { getWrokspaces } from "@/features/workspaces/queries";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
