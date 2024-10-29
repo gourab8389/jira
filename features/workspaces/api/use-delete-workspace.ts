@@ -4,7 +4,7 @@ import { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
 
-type ResponseType = InferResponseType<typeof client.api.workspaces[":workspaceId"]["$delete"]>;
+type ResponseType = InferResponseType<typeof client.api.workspaces[":workspaceId"]["$delete"], 200>;
 
 type RequestType = InferRequestType<typeof client.api.workspaces[":workspaceId"]["$delete"]>;
 
@@ -25,9 +25,10 @@ export const useDeleteeWorkspace = () => {
 
         return await response.json();
        },
-       onSuccess: () => {
+       onSuccess: ({ data }) => {
         toast.success("Workspace deleted successfully");
         queryClient.invalidateQueries({ queryKey: ["workspaces"]});
+        queryClient.invalidateQueries({ queryKey: ["workspace", data.$id ]});
        },
        onError: () => {
         toast.error("Failed to delete workspace");
