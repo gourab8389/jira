@@ -4,11 +4,11 @@ import { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
 
-type ResponseType = InferResponseType<typeof client.api.workspaces[":workspaceId"]["reset-invite-code"]["$post"], 200>;
+type ResponseType = InferResponseType<typeof client.api.workspaces[":workspaceId"]["join"]["$post"], 200>;
 
-type RequestType = InferRequestType<typeof client.api.workspaces[":workspaceId"]["reset-invite-code"]["$post"]>;
+type RequestType = InferRequestType<typeof client.api.workspaces[":workspaceId"]["join"]["$post"]>;
 
-export const useResetInviteCode = () => {
+export const useJoinWorkspace = () => {
     const queryClient = useQueryClient();
 
     const mutation = useMutation<
@@ -16,22 +16,22 @@ export const useResetInviteCode = () => {
     Error,
     RequestType
     >({
-       mutationFn: async ({param}) => {
-        const response = await client.api.workspaces[":workspaceId"]["reset-invite-code"]["$post"]({ param });
+       mutationFn: async ({param, json}) => {
+        const response = await client.api.workspaces[":workspaceId"]["join"]["$post"]({ param, json });
 
         if(!response.ok){
-            throw new Error("Failed to reset workspace");
+            throw new Error("Failed to join workspace");
         }
 
         return await response.json();
        },
        onSuccess: ({ data }) => {
-        toast.success("Invite code reset");
+        toast.success("Joined workspaces");
         queryClient.invalidateQueries({ queryKey: ["workspaces"]});
         queryClient.invalidateQueries({ queryKey: ["workspace", data.$id ]});
        },
        onError: () => {
-        toast.error("Failed to reset invite code");
+        toast.error("Failed to join workspace");
        }
     });
     return mutation;
