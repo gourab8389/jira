@@ -72,20 +72,9 @@ interface GetWorkspaceInfoProps {
   workspaceId: string;
 }
 
-export const getWrokspaceInfo = async ({ workspaceId }: GetWorkspaceProps) => {
+export const getWrokspaceInfo = async ({ workspaceId }: GetWorkspaceInfoProps) => {
   try {
-    const { databases, account } = await createSessionClient();
-    const user = await account.get();
-
-    const member = await getMember({
-      databases,
-      userId: user.$id,
-      workspaceId,
-    });
-
-    if (!member) {
-      return null;
-    }
+    const { databases } = await createSessionClient();
 
     const workspace = await databases.getDocument<Workspace>(
       DATABASE_ID,
@@ -93,7 +82,9 @@ export const getWrokspaceInfo = async ({ workspaceId }: GetWorkspaceProps) => {
       workspaceId
     );
 
-    return workspace;
+    return {
+      name: workspace.name,
+    };
   } catch {
     return null;
   }
