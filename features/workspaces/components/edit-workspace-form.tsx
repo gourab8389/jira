@@ -209,7 +209,11 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: editWorkspaceForm
               </p>
               <Button 
               className="mt-6 w-fit ml-auto"
-              
+              size={"sm"}
+              variant={"destructive"}
+              type="button"
+              disabled={isPending}
+              onClick={() => {}}
               >
                 Delete Workspace
               </Button>
