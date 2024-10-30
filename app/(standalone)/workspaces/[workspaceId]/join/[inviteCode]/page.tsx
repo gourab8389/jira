@@ -1,4 +1,5 @@
 import { getCurrent } from "@/features/auth/queries";
+import { JoinWorkspaceForm } from "@/features/workspaces/components/join-workspace-form";
 import { getWrokspaceInfo } from "@/features/workspaces/queries";
 import { redirect } from "next/navigation";
 
@@ -15,13 +16,17 @@ const WorkspaceIdJoinPage = async ({
   const user = await getCurrent();
   if(!user) redirect("/sign-in");
 
-  const workspace = await getWrokspaceInfo({
+  const initialValues = await getWrokspaceInfo({
     workspaceId: params.workspaceId,
   })
 
+  if(!initialValues){
+    redirect("/");
+  }
+
   return (
     <div>
-     {JSON.stringify(workspace)}
+     <JoinWorkspaceForm initialValues={initialValues}/>
     </div>
   );
 };
