@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import Image from "next/image";
-import { useRef } from "react";
+import { use, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,6 +27,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { updateWorkspaceSchema } from "../schemas";
 import { Workspace } from "../types";
 import { useUpdateWorkspace } from "../api/use-update-workspace";
+import { useConfirm } from "@/hooks/use-confrim";
+import { useDeleteeWorkspace } from "../api/use-delete-workspace";
 
 interface editWorkspaceFormProps {
   onCancel?: () => void;
@@ -38,6 +40,17 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: editWorkspaceForm
   const router = useRouter();
   const { mutate, isPending } = useUpdateWorkspace();
 
+  const {
+     mutate: deleteWorkspace, 
+     isPending: isDeleteWorkspace 
+    } = useDeleteeWorkspace();
+
+  const [DeleteDialog, confrimDelete] = useConfirm(
+    "Delete Workspace",
+    "This action cannot be undone.",
+    "destructive"
+  );
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<z.infer<typeof updateWorkspaceSchema>>({
@@ -47,6 +60,20 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: editWorkspaceForm
       image: initialValues.imageUrl ?? "",
     },
   });
+
+  const handledelete = async () => {
+    const ok = await confrimDelete();
+
+    if(!ok) return;
+
+    deleteWorkspace({
+      param: { workspaceId: initialValues.$id },
+    },{
+      onSuccess: () => {
+        window.location.href = "/";
+      }
+    })
+  }
 
   const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
     const finalValues = {
@@ -73,6 +100,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: editWorkspaceForm
 
   return (
     <div className="flex flex-col gap-y-4">
+      <DeleteDialog/>
     <Card className="w-full h-full border-none shadow-none">
       <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
         <Button size={"sm"} variant={"secondary"} onClick={onCancel ? onCancel : () => router.push(`/workspaces/${initialValues.$id}`)}>
@@ -212,8 +240,8 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: editWorkspaceForm
               size={"sm"}
               variant={"destructive"}
               type="button"
-              disabled={isPending}
-              onClick={() => {}}
+              disabled={isPending || isDeleteWorkspace}
+              onClick={handledelete}
               >
                 Delete Workspace
               </Button>
