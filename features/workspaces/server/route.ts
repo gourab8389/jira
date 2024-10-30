@@ -12,6 +12,7 @@ import { DATABASE_ID, IMAGES_BUCKET_ID, MEMBERS_ID, WORKSPACES_ID } from "@/conf
 
 import { Workspace } from "../types";
 import { createWorkspaceSchema, updateWorkspaceSchema } from "../schemas";
+import { error } from "console";
 
 
 const app = new Hono()
@@ -248,7 +249,24 @@ const app = new Hono()
             WORKSPACES_ID,
             workspaceId
         );
+
+        if(workspace.inviteCode !== code){
+            return c.json({ error: "Invalid invite code"}, 400);
+        }
+
+        await databases.createDocument(
+            DATABASE_ID,
+            MEMBERS_ID,
+            ID.unique(),
+            {
+                userId: user.$id,
+                workspaceId,
+                role: MemberRole.MEMBER,
+            },
+        );
+
+        return c.json({ data: workspace });
     }
-)
+);
 
 export default app;
