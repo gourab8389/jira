@@ -25,7 +25,7 @@ const WorkspaceIdJoinPage = async ({
   }
 
   return (
-    <div>
+    <div className="w-full lg:max-w-xl">
      <JoinWorkspaceForm initialValues={initialValues}/>
     </div>
   );

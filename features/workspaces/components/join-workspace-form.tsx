@@ -1,5 +1,9 @@
 "use client";
 
+import Link from "next/link";
+
+import { DottedSeparator } from "@/components/shared/dotted-separator";
+import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -7,6 +11,8 @@ import {
     CardHeader,
     CardTitle
 } from"@/components/ui/card";
+import { useJoinWorkspace } from "../api/use-join-workspace";
+
 
 interface JoinWorkspaceFormProps {
     initialValues: {
@@ -17,6 +23,9 @@ interface JoinWorkspaceFormProps {
 export const JoinWorkspaceForm = ({
     initialValues
 }: JoinWorkspaceFormProps) => {
+
+    const { mutate } = useJoinWorkspace();
+
     return (
         <div className="w-full h-full border-none shadow-none">
             <CardHeader className="p-7">
@@ -28,6 +37,30 @@ export const JoinWorkspaceForm = ({
                     You&apos;ve been invited to join <strong>{initialValues.name}</strong> workspace.
                 </CardDescription>
             </CardHeader>
+            <div className="px-7">
+                <DottedSeparator/>
+            </div>
+            <CardContent className="p-7">
+                <div className="flex flex-col gap-2 lg:flex-row items-center justify-between">
+                    <Button 
+                    variant={"secondary"} 
+                    type="button" size={"lg"} 
+                    asChild 
+                    className="w-full lg:w-fit"
+                    >
+                        <Link href={"/"}>
+                         Cancel
+                        </Link>
+                    </Button>
+                    <Button 
+                    size={"lg"} 
+                    className="w-full lg:w-fit"
+                    type="button"
+                    >
+                        Join Workspace
+                    </Button>
+                </div>
+            </CardContent>
         </div>
     );
 }
