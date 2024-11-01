@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getCurrent } from '@/features/auth/queries';
 
-const WorkspaceIdPage = async () => {
+const WorkspaceIdPage = async ({ params }) => {
 
   const user = await getCurrent();
 
@@ -9,9 +9,9 @@ const WorkspaceIdPage = async () => {
 
   return (
     <div>
-      hello
+      Workspace Id: {params.workspaceId}
     </div>
   )
 }
 
-export default WorkspaceIdPage
+export default WorkspaceIdPage;

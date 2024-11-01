@@ -65,6 +65,7 @@ export const JoinWorkspaceForm = ({
                     type="button" size={"lg"} 
                     asChild 
                     className="w-full lg:w-fit"
+                    disabled={isPending}
                     >
                         <Link href={"/"}>
                          Cancel
