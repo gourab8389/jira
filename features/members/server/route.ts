@@ -52,7 +52,33 @@ const app = new Hono()
             })
         );
 
-        
+        return c.json({
+            data: {
+                ...members,
+                documents: populatedMembers,
+            }
+        });
+    }
+)
+.delete(
+    "/:memberId",
+    sessionMiddleware,
+    async (c) => {
+        const { memberId } = c.req.param();
+        const user = c.get("user");
+        const databases = c.get("databases");
+
+        const memberToDelete = await databases.getDocument(
+            DATABASE_ID,
+            MEMBERS_ID,
+            memberId
+        );
+
+        const allMembersInWorkspace = await databases.listDocuments(
+            DATABASE_ID,
+            MEMBERS_ID,
+            [Query.equal("workspaceId", memberToDelete.workspaceId)]
+        )
     }
 )
 
