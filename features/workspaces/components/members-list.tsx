@@ -6,6 +6,8 @@ import Link from "next/link";
 
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
+import { useDeleteMember } from "@/features/members/api/use-delete-member";
+import { useUpdateMember } from "@/features/members/api/use-update-member";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,7 +23,17 @@ import {
 
 export const MembersList = () => {
   const workspaceId = useWorkspaceId();
+
+
   const { data } = useGetMembers({ workspaceId });
+  const {
+    mutate: deleteMember,
+    isPending: isDeletingMember,
+  } = useDeleteMember();
+  const {
+    mutate: updateMember,
+    isPending: isUpdatingMember,
+  } = useUpdateMember();
 
   return (
     <Card className="w-full h-full border-none shadow-none">
