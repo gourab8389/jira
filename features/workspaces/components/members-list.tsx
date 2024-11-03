@@ -8,12 +8,14 @@ import { useGetMembers } from "@/features/members/api/use-get-members";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { useDeleteMember } from "@/features/members/api/use-delete-member";
 import { useUpdateMember } from "@/features/members/api/use-update-member";
+import { MemberRole } from "@/features/members/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { DottedSeparator } from "@/components/shared/dotted-separator";
+import { useConfirm } from "@/hooks/use-confrim";
 import { Separator } from "@/components/ui/separator";
+import { DottedSeparator } from "@/components/shared/dotted-separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -21,8 +23,14 @@ import {
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
 
+
 export const MembersList = () => {
   const workspaceId = useWorkspaceId();
+  const [ConfirmDialog, confrim] = useConfirm(
+    "Remove member",
+    "This member will be removed from the workspace. Are you sure you want to continue?",
+    "destructive"
+  );
 
 
   const { data } = useGetMembers({ workspaceId });
@@ -35,8 +43,16 @@ export const MembersList = () => {
     isPending: isUpdatingMember,
   } = useUpdateMember();
 
+  const handleUpdateMember = async (memberId: string, role: MemberRole) => {
+    updateMember({
+        json: { role },
+        param: { memberId },
+    });
+  }
+
   return (
     <Card className="w-full h-full border-none shadow-none">
+        <ConfirmDialog/>
       <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
         <Button asChild variant={"secondary"} size={"sm"}>
           <Link href={`/workspaces/${workspaceId}`}>
