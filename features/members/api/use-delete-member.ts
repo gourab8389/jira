@@ -4,9 +4,9 @@ import { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
 
-type ResponseType = InferResponseType<typeof client.api.workspaces[":workspaceId"]["$delete"], 200>;
+type ResponseType = InferResponseType<typeof client.api.members[":memberId"]["$delete"], 200>;
 
-type RequestType = InferRequestType<typeof client.api.workspaces[":workspaceId"]["$delete"]>;
+type RequestType = InferRequestType<typeof client.api.members[":memberId"]["$delete"]>;
 
 export const useDeleteMember = () => {
     const queryClient = useQueryClient();
@@ -17,21 +17,20 @@ export const useDeleteMember = () => {
     RequestType
     >({
        mutationFn: async ({param}) => {
-        const response = await client.api.workspaces[":workspaceId"]["$delete"]({ param });
+        const response = await client.api.members[":memberId"]["$delete"]({ param });
 
         if(!response.ok){
-            throw new Error("Failed to delete workspace");
+            throw new Error("Failed to delete member");
         }
 
         return await response.json();
        },
-       onSuccess: ({ data }) => {
-        toast.success("Workspace deleted successfully");
-        queryClient.invalidateQueries({ queryKey: ["workspaces"]});
-        queryClient.invalidateQueries({ queryKey: ["workspace", data.$id ]});
+       onSuccess: () => {
+        toast.success("Member deleted successfully");
+        queryClient.invalidateQueries({ queryKey: ["members"]});
        },
        onError: () => {
-        toast.error("Failed to delete workspace");
+        toast.error("Failed to delete member");
        }
     });
     return mutation;
