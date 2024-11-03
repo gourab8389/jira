@@ -28,9 +28,9 @@ import { updateWorkspaceSchema } from "../schemas";
 import { Workspace } from "../types";
 import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { useConfirm } from "@/hooks/use-confrim";
-import { useDeleteeWorkspace } from "../api/use-delete-workspace";
 import { toast } from "sonner";
 import { useResetInviteCode } from "../api/use-reset-invite-code";
+import { useDeleteWorkspace } from "../api/use-delete-workspace";
 
 interface editWorkspaceFormProps {
   onCancel?: () => void;
@@ -45,7 +45,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: editWorkspaceForm
   const {
      mutate: deleteWorkspace, 
      isPending: isDeleteWorkspace 
-    } = useDeleteeWorkspace();
+    } = useDeleteWorkspace();
 
   const {
      mutate: resetInviteCode, 

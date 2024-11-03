@@ -8,7 +8,7 @@ type ResponseType = InferResponseType<typeof client.api.workspaces[":workspaceId
 
 type RequestType = InferRequestType<typeof client.api.workspaces[":workspaceId"]["$delete"]>;
 
-export const useDeleteWorkspace = () => {
+export const useDeleteMember = () => {
     const queryClient = useQueryClient();
 
     const mutation = useMutation<
