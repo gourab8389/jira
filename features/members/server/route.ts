@@ -123,6 +123,7 @@ const app = new Hono()
     })),
     async (c) => {
         const { memberId } = c.req.param();
+        const { role } = c.req.valid("json");
         const user = c.get("user");
         const databases = c.get("databases");
 
@@ -157,14 +158,17 @@ const app = new Hono()
 
         if(allMembersInWorkspace.total === 1){
             return c.json({
-                error: "Cannot delete the last member of a workspace"
+                error: "Cannot downgrade the only member of a workspace"
             }, 400);
         }
 
-        await databases.deleteDocument(
+        await databases.updateDocument(
             DATABASE_ID,
             MEMBERS_ID,
             memberId,
+            {
+                role
+            }
         );
 
         return c.json({
