@@ -1,10 +1,14 @@
 import { z } from "zod";
+import { Query } from "node-appwrite";
 import { Hono } from "hono";
 
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { zValidator } from "@hono/zod-validator";
+import { DATABASE_ID, MEMBERS_ID } from "@/config";
 import { createAdminClient } from "@/lib/appwrite";
+
 import { getMember } from "../utils";
+
 
 const app = new Hono()
 .get(
@@ -28,8 +32,27 @@ const app = new Hono()
         if(!member){
             return c.json({
                 error: "Unauthorized"
-            }, 404);
+            }, 401);
         }
+
+        const members = await databases.listDocuments(
+            DATABASE_ID,
+            MEMBERS_ID,
+            [Query.equal("workspaceId", workspaceId)]
+        );
+
+        const populatedMembers = await Promise.all(
+            members.documents.map(async (member) => {
+                const user = await users.get(member.userId);
+                return {
+                    ...member,
+                    name: user.name,
+                    email: user.email,
+                }
+            })
+        );
+
+        
     }
 )
 
