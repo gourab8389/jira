@@ -126,7 +126,7 @@ const app = new Hono()
         const user = c.get("user");
         const databases = c.get("databases");
 
-        const memberToDelete = await databases.getDocument(
+        const memberToUpdate = await databases.getDocument(
             DATABASE_ID,
             MEMBERS_ID,
             memberId
@@ -135,12 +135,12 @@ const app = new Hono()
         const allMembersInWorkspace = await databases.listDocuments(
             DATABASE_ID,
             MEMBERS_ID,
-            [Query.equal("workspaceId", memberToDelete.workspaceId)]
+            [Query.equal("workspaceId", memberToUpdate.workspaceId)]
         );
 
         const member = await getMember({
             databases,
-            workspaceId: memberToDelete.workspaceId,
+            workspaceId: memberToUpdate.workspaceId,
             userId: user.$id
         });
 
@@ -149,7 +149,7 @@ const app = new Hono()
                 error: "Unauthorized"
             }, 401);
         }
-        if(member.$id !== memberToDelete.$id && member.role !== MemberRole.ADMIN){
+        if(member.role !== MemberRole.ADMIN){
             return c.json({
                 error: "Unauthorized"
             }, 401);
@@ -168,7 +168,7 @@ const app = new Hono()
         );
 
         return c.json({
-            data: { $id: memberToDelete.$id }
+            data: { $id: memberToUpdate.$id }
         });
     }
 )
