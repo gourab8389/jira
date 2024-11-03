@@ -8,6 +8,7 @@ import { DATABASE_ID, MEMBERS_ID } from "@/config";
 import { createAdminClient } from "@/lib/appwrite";
 
 import { getMember } from "../utils";
+import { MemberRole } from "../types";
 
 
 const app = new Hono()
@@ -78,7 +79,24 @@ const app = new Hono()
             DATABASE_ID,
             MEMBERS_ID,
             [Query.equal("workspaceId", memberToDelete.workspaceId)]
-        )
+        );
+
+        const member = await getMember({
+            databases,
+            workspaceId: memberToDelete.workspaceId,
+            userId: user.$id
+        });
+
+        if(!member){
+            return c.json({
+                error: "Unauthorized"
+            }, 401);
+        }
+        if(member.$id !== memberToDelete.$id && member.role !== MemberRole.ADMIN){
+            return c.json({
+                error: "Unauthorized"
+            }, 401);
+        }
     }
 )
 
