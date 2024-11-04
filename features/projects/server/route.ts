@@ -7,7 +7,7 @@ import { getMember } from "@/features/members/utils";
 
 import { DATABASE_ID, IMAGES_BUCKET_ID, PROJECTS_ID } from "@/config";
 import { sessionMiddleware } from "@/lib/session-middleware";
-import { createProjectSchema } from "../schema";
+import { createProjectSchema } from "../schemas";
 
 const app = new Hono()
 .post(

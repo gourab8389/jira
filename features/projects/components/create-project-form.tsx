@@ -22,16 +22,16 @@ import { DottedSeparator } from "@/components/shared/dotted-separator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { createProjectSchema } from "../schema";
+import { createProjectSchema } from "../schemas";
 import { useCreateProject } from "../api/use-create-project";
 
 
 
-interface createProjectFormProps {
+interface CreateProjectFormProps {
   onCancel?: () => void;
 }
 
-export const CreateProjectForm = ({ onCancel }: createProjectFormProps) => {
+export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
 
   const router = useRouter();
   const { mutate, isPending } = useCreateProject();

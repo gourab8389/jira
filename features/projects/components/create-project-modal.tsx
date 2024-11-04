@@ -5,7 +5,7 @@ import { useCreateProjectModal } from "../hooks/use-create-project-modal";
 
 
 
-export const CreateWorkspaceModal = () => {
+export const CreateProjectModal = () => {
 
     const { isOpen, setIsOpen, close } = useCreateProjectModal();
 
