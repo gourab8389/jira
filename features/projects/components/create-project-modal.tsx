@@ -1,7 +1,7 @@
 "use client"
 import { ResponsiveModal } from "@/components/dashboard/responsive-modal";
 import { CreateProjectForm } from "./create-project-form";
-import { useCreateProjectModal } from "../hook/use-create-project-modal";
+import { useCreateProjectModal } from "../hooks/use-create-project-modal";
 
 
 
