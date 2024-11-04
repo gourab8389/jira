@@ -11,7 +11,6 @@ interface GetProjectProps {
   }
   
   export const getProject = async ({ projectId }: GetProjectProps) => {
-    try {
       const { databases, account } = await createSessionClient();
       const user = await account.get();
   
@@ -28,12 +27,9 @@ interface GetProjectProps {
       });
   
       if (!member) {
-        return null;
+        throw new Error("Unauthorized");
       }
   
   
       return project;
-    } catch {
-      return null;
-    }
   };
