@@ -4,8 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { RiAddCircleFill } from "react-icons/ri";
 
+import { cn } from "@/lib/utils";
+
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+
 
 
 
@@ -33,7 +36,15 @@ const Projects = () => {
                 const isActive = pathname === href;
 
                 return (
-                    <Link href={href}>
+                    <Link href={href} key={project.$id}>
+                        <div className={cn(
+                            "flex items-center gap-2.5 p-2.5 rounded-md hover:opacity-75 transition cursor-pointer text-neutral-500",
+                            isActive && "bg-white shadow-sm hover:opacity-100 text-primary",
+                            )}>
+                            <span className="truncate">
+                                {project.name}
+                            </span>
+                        </div>
                     </Link>
                 )
             })}
