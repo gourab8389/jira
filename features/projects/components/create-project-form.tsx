@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImageIcon } from "lucide-react";
 
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -22,8 +24,11 @@ import { DottedSeparator } from "@/components/shared/dotted-separator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+
 import { createProjectSchema } from "../schemas";
+
 import { useCreateProject } from "../api/use-create-project";
+
 
 
 
@@ -33,13 +38,14 @@ interface CreateProjectFormProps {
 
 export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
 
+  const workspaceId = useWorkspaceId();
   const router = useRouter();
   const { mutate, isPending } = useCreateProject();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<z.infer<typeof createProjectSchema>>({
-    resolver: zodResolver(createProjectSchema),
+    resolver: zodResolver(createProjectSchema.omit({ workspaceId: true })),
     defaultValues: {
       name: "",
     },
@@ -48,12 +54,12 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
   const onSubmit = (values: z.infer<typeof createProjectSchema>) => {
     const finalValues = {
         ...values,
+        workspaceId,
         image: values.image instanceof File ? values.image : "",
     }
     mutate({ form: finalValues }, {
         onSuccess: ({ data }) => {
             form.reset();
-            router.push(`/projects/${data.$id}`)
         }
     });
   };
@@ -69,7 +75,7 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
     <Card className="w-full h-full border-none shadow-none">
       <CardHeader className="flex p-7">
         <CardTitle className="text-xl font-bold">
-          Create a new workspace
+          Create a new Project
         </CardTitle>
       </CardHeader>
       <div className="px-7">
@@ -84,9 +90,9 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Workspace Name</FormLabel>
+                    <FormLabel>Project Name</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter workspace name" />
+                      <Input {...field} placeholder="Enter project name" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -119,7 +125,7 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                         </Avatar>
                       )}
                       <div className="flex flex-col">
-                        <p className="text-sm">Workspace Icon</p>
+                        <p className="text-sm">Project Icon</p>
                         <p className="text-sm text-muted-foreground">
                             JPG, PNG, SVG or JPEG, max 1mb
                         </p>
@@ -181,7 +187,7 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
               </Button>
 
               <Button disabled={isPending} type="submit" size={"lg"}>
-                Create Workspace
+                Create Project
               </Button>
             </div>
           </form>

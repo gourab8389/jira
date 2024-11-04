@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { useCreateProjectModal } from "@/features/projects/hooks/use-create-project-modal";
 
 
 
@@ -17,6 +18,7 @@ const Projects = () => {
 
 
     const pathname = usePathname();
+    const { open } = useCreateProjectModal();
     const workspaceId = useWorkspaceId()
     const { data } = useGetProjects({ 
         workspaceId, 
@@ -27,7 +29,7 @@ const Projects = () => {
             <div className="flex items-center justify-between">
                 <p className="text-xs uppercase text-neutral-500">Projects</p>
                 <RiAddCircleFill
-                onClick={() => {}}
+                onClick={open}
                 className="text-neutral-500 size-5 cursor-pointer hover:opacity-75 transition"/>
             </div>
             {data?.documents.map((project) => {
