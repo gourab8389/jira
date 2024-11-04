@@ -30,6 +30,7 @@ import { useConfirm } from "@/hooks/use-confrim";
 import { Project } from "../types";
 import { updateProjectSchema } from "../schemas";
 import { useUpdateProject } from "../api/use-update-project";
+import { useDeleteProject } from "../api/use-delete-project";
 
 interface EditProjectFormProps {
   onCancel?: () => void;
@@ -41,10 +42,10 @@ export const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProp
   const router = useRouter();
   const { mutate, isPending } = useUpdateProject();
 
-  // const {
-  //    mutate: deleteProject, 
-  //    isPending: isDeleteProject 
-  //   } = useDeleteProject();
+  const {
+     mutate: deleteProject, 
+     isPending: isDeletingProject 
+    } = useDeleteProject();
 
 
   const [DeleteDialog, confirmDelete] = useConfirm(
@@ -69,13 +70,13 @@ export const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProp
 
     if(!ok) return;
 
-    // deleteProject({
-    //   param: { projectId: initialValues.$id },
-    // },{
-    //   onSuccess: () => {
-    //     window.location.href = "/";
-    //   }
-    // })
+    deleteProject({
+      param: { projectId: initialValues.$id },
+    },{
+      onSuccess: () => {
+        window.location.href = `/workspaces/${initialValues.workspaceId}`;
+      }
+    })
   };
 
 
@@ -247,7 +248,7 @@ export const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProp
               size={"sm"}
               variant={"destructive"}
               type="button"
-              disabled={isPending}
+              disabled={isPending || isDeletingProject}
               onClick={handledelete}
               >
                 Delete Project
