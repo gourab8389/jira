@@ -27,11 +27,11 @@ import { useCreateProject } from "../api/use-create-project";
 
 
 
-interface createWorkspaceFormProps {
+interface createProjectFormProps {
   onCancel?: () => void;
 }
 
-export const CreateWorkspaceForm = ({ onCancel }: createWorkspaceFormProps) => {
+export const CreateProjectForm = ({ onCancel }: createProjectFormProps) => {
 
   const router = useRouter();
   const { mutate, isPending } = useCreateProject();
