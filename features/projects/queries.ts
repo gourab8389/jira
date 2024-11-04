@@ -1,6 +1,6 @@
 import { getMember } from "@/features/members/utils";
 
-import { DATABASE_ID, WORKSPACES_ID } from "@/config";
+import { DATABASE_ID, PROJECTS_ID,  } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
 
 import { Project } from "./types";
@@ -17,7 +17,7 @@ interface GetProjectProps {
   
       const project = await databases.getDocument<Project>(
         DATABASE_ID,
-        WORKSPACES_ID,
+        PROJECTS_ID,
         projectId
       );
 
