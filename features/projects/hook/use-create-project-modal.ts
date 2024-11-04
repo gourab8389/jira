@@ -1,8 +1,8 @@
 import { useQueryState, parseAsBoolean } from "nuqs";
 
 
-export const useCreateWorkspaceModal = () => {
-    const [isOpen, setIsOpen] = useQueryState("createWorkspaceModal", 
+export const useCreateProjectModal = () => {
+    const [isOpen, setIsOpen] = useQueryState("create-project", 
         parseAsBoolean.withDefault(false).withOptions({ clearOnDefault: true })
     );
 
