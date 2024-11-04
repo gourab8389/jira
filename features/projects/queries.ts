@@ -1,7 +1,10 @@
+import { getMember } from "@/features/members/utils";
+
+import { DATABASE_ID, WORKSPACES_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
 
-import { getMember } from "@/features/members/utils";
-import { DATABASE_ID, WORKSPACES_ID } from "@/config";
+import { Project } from "./types";
+
 
 interface GetProjectProps {
     projectId: string;
@@ -12,7 +15,7 @@ interface GetProjectProps {
       const { databases, account } = await createSessionClient();
       const user = await account.get();
   
-      const project = await databases.getDocument<Workspace>(
+      const project = await databases.getDocument<Project>(
         DATABASE_ID,
         WORKSPACES_ID,
         projectId
@@ -21,7 +24,7 @@ interface GetProjectProps {
       const member = await getMember({
         databases,
         userId: user.$id,
-        workspaceId
+        workspaceId: project.workspaceId
       });
   
       if (!member) {
@@ -29,7 +32,7 @@ interface GetProjectProps {
       }
   
   
-      return workspace;
+      return project;
     } catch {
       return null;
     }
