@@ -16,8 +16,8 @@ export const useCreateTask = () => {
     Error,
     RequestType
     >({
-       mutationFn: async ({form}) => {
-        const response = await client.api.tasks["$post"]({ form });
+       mutationFn: async ({ json }) => {
+        const response = await client.api.tasks["$post"]({ json });
 
         if(!response.ok){
             throw new Error("Failed to create task");
