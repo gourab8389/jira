@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { Hono } from "hono";
 import { ID, Query } from "node-appwrite";
 import { zValidator } from "@hono/zod-validator";
@@ -6,11 +7,49 @@ import { getMember } from "@/features/members/utils";
 
 import { DATABASE_ID, TASKS_ID } from "@/config";
 import { sessionMiddleware } from "@/lib/session-middleware";
+import { createAdminClient } from "@/lib/appwrite";
 
 import { createTaskSchema } from "../schemas";
+import { TaskStatus } from "../types";
+
 
 
 const app = new Hono()
+.get(
+    "/",
+    sessionMiddleware,
+    zValidator(
+        "query",
+        z.object({
+            workspaceId: z.string(),
+            projectId: z.string().nullish(),
+            assigneeId: z.string().nullish(),
+            status: z.nativeEnum(TaskStatus).nullish(),
+            search: z.string().nullish(),
+            dueDate: z.string().nullish(),
+        })
+    ),
+    async (c) => {
+        const { users } = await createAdminClient();
+        const databases = c.get("databases");
+        const user = c.get("user");
+
+        const {
+            workspaceId,
+            projectId,
+            status,
+            search,
+            assigneeId,
+            dueDate,
+        } = c.req.valid("query");
+
+        const member = await getMember({
+            databases,
+            workspaceId,
+            userId: user.$id,
+        })
+    }
+)
 .post(
     "/",
     sessionMiddleware,
