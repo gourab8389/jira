@@ -4,8 +4,9 @@ import { ID, Query } from "node-appwrite";
 import { zValidator } from "@hono/zod-validator";
 
 import { getMember } from "@/features/members/utils";
+import { Project } from "@/features/projects/types";
 
-import { DATABASE_ID, TASKS_ID } from "@/config";
+import { DATABASE_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { createAdminClient } from "@/lib/appwrite";
 
@@ -47,6 +48,75 @@ const app = new Hono()
             databases,
             workspaceId,
             userId: user.$id,
+        })
+
+        if(!member){
+            return c.json({ error: "Unauthorized" }, 401);
+        }
+
+        const query = [
+            Query.equal("workspaceId", workspaceId),
+            Query.orderDesc("$createdAt"),
+        ];
+
+        if(projectId){
+            console.log("projectId", projectId);
+            query.push(Query.equal("projectId", projectId));
+        }
+
+        if(status){
+            console.log("status", status);
+            query.push(Query.equal("status", status));
+        }
+
+        if(assigneeId){
+            console.log("assigneeId", assigneeId);
+            query.push(Query.equal("assigneeId", assigneeId));
+        }
+
+        if(dueDate){
+            console.log("dueDate", dueDate);
+            query.push(Query.equal("dueDate", dueDate));
+        }
+
+        if(search){
+            console.log("search", search);
+            query.push(Query.search("name", search));
+        }
+
+        const tasks = await databases.listDocuments(
+            DATABASE_ID,
+            TASKS_ID,
+            query,
+        )
+
+
+        const projectIds = tasks.documents.map((task) => task.projectId);
+        const assigneeIds = tasks.documents.map((task) => task.assigneeId);
+
+        const projects = await databases.listDocuments<Project>(
+            DATABASE_ID,
+            PROJECTS_ID,
+            projectIds.length > 0 ? [Query.contains("$id", projectIds)] : [],
+            
+        );
+
+        const assignees = await databases.listDocuments(
+            DATABASE_ID,
+            MEMBERS_ID,
+            assigneeIds.length > 0 ? [Query.contains("$id", assigneeIds)] : [],
+            
+        );
+
+        const populatedTasks = tasks.documents.map((task) => {
+            const project = projects.documents.find((project) => project.$id === task.projectId);
+
+            const assignee = assignees.documents.find((assignee) => assignee.$id === task.assigneeId);
+            return {
+                ...task,
+                project,
+                assignee,
+            }
         })
     }
 )
