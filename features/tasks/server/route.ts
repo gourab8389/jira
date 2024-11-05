@@ -101,23 +101,41 @@ const app = new Hono()
             
         );
 
-        const assignees = await databases.listDocuments(
+        const members = await databases.listDocuments(
             DATABASE_ID,
             MEMBERS_ID,
             assigneeIds.length > 0 ? [Query.contains("$id", assigneeIds)] : [],
             
         );
 
+        const assignees = await Promise.all(
+            members.documents.map(async (member) => {
+                const user = await users.get(member.userId);
+                return {
+                    ...member,
+                    name: user.name,
+                    email: user.email,
+                }
+            })
+        );
+
         const populatedTasks = tasks.documents.map((task) => {
             const project = projects.documents.find((project) => project.$id === task.projectId);
 
-            const assignee = assignees.documents.find((assignee) => assignee.$id === task.assigneeId);
+            const assignee = assignees.find((assignee) => assignee.$id === task.assigneeId);
             return {
                 ...task,
                 project,
                 assignee,
             }
-        })
+        });
+
+        return c.json({
+            data: {
+                ...tasks,
+                documents: populatedTasks,
+            }
+        });
     }
 )
 .post(
