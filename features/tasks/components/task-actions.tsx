@@ -1,4 +1,4 @@
-import { ExternalLinkIcon } from "lucide-react";
+import { ExternalLinkIcon, PencilIcon, Trash } from "lucide-react";
 
 import { 
     DropdownMenu,
@@ -32,6 +32,33 @@ export const TaskActions = ({
                     >
                         <ExternalLinkIcon className="size-4 mr-2 stroke-2"/>
                         Task Details
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                    className="font-medium p-[10px]"
+                    onClick={() => {}}
+                    disabled={false}
+                    >
+                        <PencilIcon className="size-4 mr-2 stroke-2"/>
+                        Edit Task
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                    className="font-medium p-[10px]"
+                    onClick={() => {}}
+                    disabled={false}
+                    >
+                        <ExternalLinkIcon className="size-4 mr-2 stroke-2"/>
+                        Open Project
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                    className="text-amber-700 font-medium p-[10px] focus:text-amber-700"
+                    onClick={() => {}}
+                    disabled={false}
+                    >
+                        <Trash className="size-4 mr-2 stroke-2"/>
+                        Delete Task
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
