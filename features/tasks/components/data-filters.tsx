@@ -1,4 +1,4 @@
-import { ListChecksIcon, UserIcon } from "lucide-react";
+import { FolderIcon, ListChecksIcon, UserIcon } from "lucide-react";
 
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
@@ -113,7 +113,7 @@ const DataFilters = ({
       >
         <SelectTrigger className="w-full lg:w-auto h-8">
             <div className="flex items-center pr-2">
-                <UserIcon className="size-4 h-4 w-4 mr-2" />
+                <FolderIcon className="size-4 h-4 w-4 mr-2" />
                 <SelectValue placeholder="All projects"/>
             </div>
         </SelectTrigger>
@@ -127,8 +127,16 @@ const DataFilters = ({
             ))}
         </SelectContent>
       </Select>
+      <DatePicker
+      placeholder="Due date"
+      className="h-8 w-full lg:w-auto"
+      value={dueDate ? new Date(dueDate) : undefined}
+      onChange={(date) => {
+        setFilters({ dueDate: date ? date.toISOString() : null })
+      }}
+      />
     </div>
   )
 }
 
-export default DataFilters
+export default DataFilters;
