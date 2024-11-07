@@ -8,6 +8,7 @@ import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Button } from "@/components/ui/button";
 
 import { Task } from "../types";
+import { MemberAvatar } from "@/features/members/components/member-avatar";
 
 export const columns: ColumnDef<Task>[] = [
     {
@@ -54,6 +55,35 @@ export const columns: ColumnDef<Task>[] = [
                     />
                     <p className="line-clamp-1">
                         {project.name}
+                    </p>
+                </div>
+            )
+        }
+    },
+    {
+        accessorKey: "assignee",
+        header: ({ column }) => {
+            return (
+                <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                Assignee
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
+            const assignee = row.original.assignee;
+            return (
+                <div className="flex items-center gap-x-2 text-sm font-medium">
+                    <MemberAvatar
+                    className="size-6"
+                    fallbackClassName="text-sm"
+                    name={assignee.name} 
+                    />
+                    <p className="line-clamp-1">
+                        {assignee.name}
                     </p>
                 </div>
             )
