@@ -1,4 +1,4 @@
-import { differenceInDays, format } from "date-fns"
+import { differenceInDays, format } from "date-fns";
 
 import { cn } from "@/lib/utils";
 
@@ -17,21 +17,21 @@ const TaskDate = ({
 
     let textColor = "text-muted-foreground";
 
-    if(diffInDays <= 3) {
+    if (diffInDays <= 3) {
         textColor = "text-red-500";
-    } else if(diffInDays <= 7) {
+    } else if (diffInDays <= 7) {
         textColor = "text-orange-500";
-    } else if(diffInDays <= 14) {
+    } else if (diffInDays <= 14) {
         textColor = "text-yellow-500";
     }
 
-  return (
-    <div className={textColor}>
-      <span className={cn("truncate", className)}>
-        {format(endDate, "ppp")}
-      </span>
-    </div>
-  )
+    return (
+        <div className={textColor}>
+            <span className={cn("truncate", className)}>
+                {format(endDate, "PPP")}
+            </span>
+        </div>
+    );
 }
 
 export default TaskDate;

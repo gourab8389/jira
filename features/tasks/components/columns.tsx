@@ -3,12 +3,12 @@
 import { ArrowUpDown } from "lucide-react"
 import { ColumnDef } from "@tanstack/react-table"
 
+import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 
 import { Button } from "@/components/ui/button";
 
 import { Task } from "../types";
-import { MemberAvatar } from "@/features/members/components/member-avatar";
 import TaskDate from "./task-date";
 
 export const columns: ColumnDef<Task>[] = [
@@ -105,7 +105,7 @@ export const columns: ColumnDef<Task>[] = [
         },
         cell: ({ row }) => {
             const dueDate = row.original.dueDate;
-            return <TaskDate date={dueDate}/>
+            return <TaskDate value={dueDate}/>
         }
     }
 ];
