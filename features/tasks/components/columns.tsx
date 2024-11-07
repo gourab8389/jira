@@ -88,5 +88,23 @@ export const columns: ColumnDef<Task>[] = [
                 </div>
             )
         }
+    },
+    {
+        accessorKey: "dueDate",
+        header: ({ column }) => {
+            return (
+                <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                Due date
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
+            const dueDate = row.original.dueDate;
+            return <TaskDate date={dueDate}/>
+        }
     }
 ];
