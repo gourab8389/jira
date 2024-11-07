@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 
 import { Task } from "../types";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
+import TaskDate from "./task-date";
 
 export const columns: ColumnDef<Task>[] = [
     {
