@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
+import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,6 +34,7 @@ import {
 import { TaskStatus } from "../types";
 import { createTaskSchema } from "../schemas";
 import { useCreateTask } from "../api/use-create-task";
+
 
 
 
@@ -67,7 +69,7 @@ export const CreateTaskForm = ({
     mutate({ json: { ...values, workspaceId } }, {
         onSuccess: () => {
             form.reset();
-            // TODO: Redirect to task page
+            onCancel?.();
         }
     });
   };
@@ -174,6 +176,39 @@ export const CreateTaskForm = ({
                         <SelectItem value={TaskStatus.DONE}>
                           Done
                         </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="projectId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Project</FormLabel>
+                    <Select
+                    defaultValue={field.value}
+                    onValueChange={field.onChange}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select project"/>
+                        </SelectTrigger>
+                      </FormControl>
+                      <FormMessage/>
+                      <SelectContent>
+                        {projectOptions.map((project) => (
+                          <SelectItem key={project.id} value={project.id}>
+                            <div className="flex items-center gap-x-2">
+                              <ProjectAvatar className="size-6" 
+                              name={project.name}
+                              image={project.imageUrl}
+                              />
+                              {project.name}
+                            </div>
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormItem>
