@@ -39,8 +39,8 @@ export const TaskActions = ({
                     onClick={() => {}}
                     disabled={false}
                     >
-                        <PencilIcon className="size-4 mr-2 stroke-2"/>
-                        Edit Task
+                        <ExternalLinkIcon className="size-4 mr-2 stroke-2"/>
+                        Open Project
                     </DropdownMenuItem>
 
                     <DropdownMenuItem
@@ -48,8 +48,8 @@ export const TaskActions = ({
                     onClick={() => {}}
                     disabled={false}
                     >
-                        <ExternalLinkIcon className="size-4 mr-2 stroke-2"/>
-                        Open Project
+                        <PencilIcon className="size-4 mr-2 stroke-2"/>
+                        Edit Task
                     </DropdownMenuItem>
 
                     <DropdownMenuItem
