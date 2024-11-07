@@ -1,6 +1,6 @@
 "use client";
 
-import { PlusIcon } from "lucide-react"
+import { Loader, PlusIcon } from "lucide-react"
 import { useQueryState } from "nuqs";
 
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
@@ -67,6 +67,11 @@ export const TaskViewSwitcher = () => {
                 <DottedSeparator className="my-4"/>
                 Data filters
                 <DottedSeparator className="my-4"/>
+                {isLoadingTasks ? (
+                    <div className="w-full border rounded-lg h-[200px] flex flex-col items-center justify-center">
+                       <Loader  className="size-5 animate-spin text-muted-foreground" />
+                    </div>
+                ) : (
                 <>
                 <TabsContent value="table" className="mt-0">
                     {JSON.stringify(tasks)}
@@ -80,6 +85,7 @@ export const TaskViewSwitcher = () => {
                 {JSON.stringify(tasks)}
                 </TabsContent>
                 </>
+                )}
             </div>
         </Tabs>
     )
