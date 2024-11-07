@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { MemberAvatar } from "@/features/members/components/member-avatar";
 
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,9 +30,10 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 
+import { TaskStatus } from "../types";
 import { createTaskSchema } from "../schemas";
 import { useCreateTask } from "../api/use-create-task";
-import { MemberAvatar } from "@/features/members/components/member-avatar";
+
 
 
 
@@ -135,6 +137,43 @@ export const CreateTaskForm = ({
                             </div>
                           </SelectItem>
                         ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status</FormLabel>
+                    <Select
+                    defaultValue={field.value}
+                    onValueChange={field.onChange}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select status"/>
+                        </SelectTrigger>
+                      </FormControl>
+                      <FormMessage/>
+                      <SelectContent>
+                        <SelectItem value={TaskStatus.BACKLOG}>
+                          Backlog
+                        </SelectItem>
+                        <SelectItem value={TaskStatus.IN_PROGRESS}>
+                          In Progress
+                        </SelectItem>
+                        <SelectItem value={TaskStatus.IN_REVIEW}>
+                          In Review
+                        </SelectItem>
+                        <SelectItem value={TaskStatus.TODO}>
+                          Todo
+                        </SelectItem>
+                        <SelectItem value={TaskStatus.DONE}>
+                          Done
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>
