@@ -11,9 +11,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import DataFilters from "./data-filters";
 
+import { columns } from "./column";
+import { DataTable } from "./data-table";
+
 import { useGetTasks } from "../api/use-get-tasks";
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 import { useTaskFilters } from "../hooks/use-task-filters";
+
 
 export const TaskViewSwitcher = () => {
     const [{
@@ -72,7 +76,7 @@ export const TaskViewSwitcher = () => {
         ) : (
           <>
             <TabsContent value="table" className="mt-0">
-              {JSON.stringify(tasks)}
+              <DataTable />
             </TabsContent>
 
             <TabsContent value="kanban" className="mt-0">
