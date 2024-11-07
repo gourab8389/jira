@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import DataFilters from "./data-filters";
 
-import { columns } from "./column";
+import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 import { useGetTasks } from "../api/use-get-tasks";
@@ -76,7 +76,7 @@ export const TaskViewSwitcher = () => {
         ) : (
           <>
             <TabsContent value="table" className="mt-0">
-              <DataTable />
+              <DataTable columns={columns} data ={tasks?.documents ?? []}/>
             </TabsContent>
 
             <TabsContent value="kanban" className="mt-0">
