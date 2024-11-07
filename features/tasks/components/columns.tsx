@@ -6,11 +6,13 @@ import { ColumnDef } from "@tanstack/react-table"
 import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 
+import { snakeCaseToTitleCase } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { Task } from "../types";
 import TaskDate from "./task-date";
+
+import { Task } from "../types";
 
 export const columns: ColumnDef<Task>[] = [
     {
@@ -126,7 +128,7 @@ export const columns: ColumnDef<Task>[] = [
             const status = row.original.status;
             return (
                 <Badge>
-                    {status}
+                    {snakeCaseToTitleCase(status)}
                 </Badge>
             )
         }
