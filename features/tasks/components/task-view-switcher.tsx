@@ -13,19 +13,30 @@ import DataFilters from "./data-filters";
 
 import { useGetTasks } from "../api/use-get-tasks";
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
+import { useTaskFilters } from "../hooks/use-task-filters";
 
 export const TaskViewSwitcher = () => {
+    const [{
+        status,
+        assigneeId,
+        projectId,
+        dueDate,
+    }] = useTaskFilters();
+
   const [view, setView] = useQueryState("task-view", {
     defaultValue: "table",
   });
 
   const workspaceId = useWorkspaceId();
+  const { open } = useCreateTaskModal();
 
   const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
     workspaceId,
+    projectId,
+    assigneeId,
+    status,
+    dueDate,
   });
-
-  const { open } = useCreateTaskModal();
 
   return (
     <Tabs
