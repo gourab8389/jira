@@ -211,7 +211,7 @@ const app = new Hono()
     }
   )
   .patch(
-    "/:taskId",
+    ":taskId",
     sessionMiddleware,
     zValidator("json", createTaskSchema.partial()),
     async (c) => {
