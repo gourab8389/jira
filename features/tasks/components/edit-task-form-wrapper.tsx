@@ -1,11 +1,12 @@
 import { Loader } from "lucide-react";
+
 import { Card, CardContent } from "@/components/ui/card";
 
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
-import { CreateTaskForm } from "./create-task-form";
+import { EditTaskForm } from "./edit-task-form";
 
 import { useGetTask } from "../api/use-get-task";
 
@@ -60,8 +61,9 @@ export const EditTaskFormWrapper = ({
   }
 
   return (
-    <CreateTaskForm
+    <EditTaskForm
     onCancel={onCancel}
+    initialValues={initialValues}
     projectOptions={projectOptions ?? []}
     memberOptions={memberOptions ?? []}
     />
