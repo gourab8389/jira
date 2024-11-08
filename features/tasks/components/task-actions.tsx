@@ -1,4 +1,7 @@
+import { useRouter } from "next/navigation";
 import { ExternalLinkIcon, PencilIcon, Trash } from "lucide-react";
+
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
 import { useConfirm } from "@/hooks/use-confrim";
 
@@ -22,6 +25,9 @@ export const TaskActions = ({
      projectId, 
      children 
     }: TaskActionsProps) => {
+        const workspaceId = useWorkspaceId();
+        const router = useRouter();
+        
         const [ConfirmDialog, confirm] = useConfirm(
             "Delete Task",
             "The action cannot be undone. Are you sure you want to delete this task?",
@@ -36,6 +42,14 @@ export const TaskActions = ({
             mutate({ param: { taskId: id } });
         }
 
+        const onOpenTask = () => {
+            router.push(`/workspaces/${workspaceId}/tasks/${id}`);
+        }
+
+        const onOpenProject = () => {
+            router.push(`/workspaces/${workspaceId}/projects/${projectId}`);
+        }
+
     return (
         <div className="flex justify-end">
             <ConfirmDialog />
@@ -46,7 +60,7 @@ export const TaskActions = ({
                 <DropdownMenuContent align="end" className="w-48">
                     <DropdownMenuItem
                     className="font-medium p-[10px]"
-                    onClick={() => {}}
+                    onClick={onOpenTask}
                     >
                         <ExternalLinkIcon className="size-4 mr-2 stroke-2"/>
                         Task Details
@@ -54,7 +68,7 @@ export const TaskActions = ({
 
                     <DropdownMenuItem
                     className="font-medium p-[10px]"
-                    onClick={() => {}}
+                    onClick={onOpenProject}
                     >
                         <ExternalLinkIcon className="size-4 mr-2 stroke-2"/>
                         Open Project
