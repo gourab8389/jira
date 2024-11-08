@@ -1,11 +1,15 @@
 import { ExternalLinkIcon, PencilIcon, Trash } from "lucide-react";
 
+import { useConfirm } from "@/hooks/use-confrim";
+
 import { 
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
  } from "@/components/ui/dropdown-menu";
+
+ import { useDeleteTask } from "../api/use-delete-task";
 
  interface TaskActionsProps {
     id: string;
@@ -18,8 +22,23 @@ export const TaskActions = ({
      projectId, 
      children 
     }: TaskActionsProps) => {
+        const [ConfirmDialog, confirm] = useConfirm(
+            "Delete Task",
+            "The action cannot be undone. Are you sure you want to delete this task?",
+            "destructive"
+        );
+        const { mutate, isPending } = useDeleteTask();
+
+        const onDelete = async () => {
+            const ok = await confirm();
+            if(!ok) return;
+
+            mutate({ param: { taskId: id } });
+        }
+
     return (
         <div className="flex justify-end">
+            <ConfirmDialog />
             <DropdownMenu modal={false}>
                 <DropdownMenuTrigger>
                     {children}
@@ -28,7 +47,6 @@ export const TaskActions = ({
                     <DropdownMenuItem
                     className="font-medium p-[10px]"
                     onClick={() => {}}
-                    disabled={false}
                     >
                         <ExternalLinkIcon className="size-4 mr-2 stroke-2"/>
                         Task Details
@@ -37,7 +55,6 @@ export const TaskActions = ({
                     <DropdownMenuItem
                     className="font-medium p-[10px]"
                     onClick={() => {}}
-                    disabled={false}
                     >
                         <ExternalLinkIcon className="size-4 mr-2 stroke-2"/>
                         Open Project
@@ -46,7 +63,6 @@ export const TaskActions = ({
                     <DropdownMenuItem
                     className="font-medium p-[10px]"
                     onClick={() => {}}
-                    disabled={false}
                     >
                         <PencilIcon className="size-4 mr-2 stroke-2"/>
                         Edit Task
@@ -54,8 +70,8 @@ export const TaskActions = ({
 
                     <DropdownMenuItem
                     className="text-amber-700 font-medium p-[10px] focus:text-amber-700"
-                    onClick={() => {}}
-                    disabled={false}
+                    onClick={onDelete}
+                    disabled={isPending}
                     >
                         <Trash className="size-4 mr-2 stroke-2"/>
                         Delete Task
