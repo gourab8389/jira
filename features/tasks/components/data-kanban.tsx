@@ -6,6 +6,7 @@ import {
   DropResult,
 } from "@hello-pangea/dnd";
 
+import { KanbanCard } from "./kanban-card";
 import KanbanColumnHeader from "./kanban-column-hearder";
 
 import { Task, TaskStatus } from "../types";
@@ -71,8 +72,8 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
                   >
                     {tasks[board].map((task, index) => (
                       <Draggable
-                        key={task.id}
-                        draggableId={task.id}
+                        key={task.$id}
+                        draggableId={task.$id}
                         index={index}
                       >
                         {(provided) => (
