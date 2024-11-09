@@ -8,6 +8,7 @@ import { PageLoader } from "@/components/shared/page-loader";
 import { PageError } from "@/components/shared/page-error";
 import { DottedSeparator } from "@/components/shared/dotted-separator";
 import { TaskOverview } from "@/features/tasks/components/task-overview";
+import { TaskDescription } from "@/features/tasks/components/task-description";
 
 export const TaskIdClient = () => {
     const taskId = useTaskId();
@@ -27,6 +28,7 @@ export const TaskIdClient = () => {
             <DottedSeparator className="my-6"/>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <TaskOverview task={data}/>
+                <TaskDescription task={data}/>
             </div>
         </div>
     )
