@@ -1,5 +1,6 @@
 "use client";
 
+import { PageLoader } from "@/components/shared/page-loader";
 import { useGetTask } from "@/features/tasks/api/use-get-task";
 import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 
