@@ -71,8 +71,61 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
             console.error("No task found at the source index");
             return prevTasks;
         }
+
+        // Update the position of the moved task
+        const updatedMovedTask = sourceStatus !== destStatus
+        ? { ...movedTask, status: destStatus } 
+        : movedTask;
+
+        // Update the source column
+        newTasks[sourceStatus] = sourceColumn;
+
+        // Add the task to the destination column
+        const destColumn = [...newTasks[destStatus]];
+        destColumn.splice(destination.index, 0, updatedMovedTask);
+        newTasks[destStatus] = destColumn;
+
+        // prepare minimal update payload
+        updatesPayload = [];
+
+        // Always update the moved task
+        updatesPayload.push({
+            $id: updatedMovedTask.$id,
+            status: destStatus,
+            position: Math.min((destination.index + 1) * 1000, 1_000_000)
+        });
+
+        // Update the rest of the tasks in the destination column
+        newTasks[destStatus].forEach((task, index) => {
+            if(task && task.$id !== updatedMovedTask.$id){
+                const newPosition = Math.min((index + 1) * 1000, 1_000_000);
+                if(task.position !== newPosition){
+                    updatesPayload.push({
+                        $id: task.$id,
+                        status: destStatus,
+                        position: newPosition
+                    });
+                }
+            }
+        });
+
+        // If the task move between columns, update the rest of the tasks in the source column
+        if(sourceStatus !== destStatus){
+            newTasks[sourceStatus].forEach((task, index) => {
+                if(task){
+                    const newPosition = Math.min((index + 1) * 1000, 1_000_000);
+                    if(task.position !== newPosition){
+                        updatesPayload.push({
+                            $id: task.$id,
+                            status: sourceStatus,
+                            position: newPosition
+                        });
+                    }
+                }
+            });
+        }
+
     });
-    
   }, []);
 
   return (
