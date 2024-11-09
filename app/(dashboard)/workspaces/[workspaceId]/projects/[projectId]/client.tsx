@@ -5,13 +5,16 @@ import { PencilIcon } from "lucide-react";
 
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { TaskViewSwitcher } from "@/features/tasks/components/task-view-switcher";
+import { useProjectId } from "@/features/projects/hooks/use-task-id";
 import { getProject } from "@/features/projects/queries";
 
 
 import { Button } from "@/components/ui/button";
+import { useGetProjects } from "@/features/projects/api/use-get-projects";
 
 export const ProjectIdClient = () => {
     const projectId = useProjectId()
+    const {} = useGetProjects()
 
     
     return (
