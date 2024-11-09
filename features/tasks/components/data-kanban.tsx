@@ -7,6 +7,7 @@ import {
 } from "@hello-pangea/dnd";
 
 import { Task, TaskStatus } from "../types";
+import KanbanColumnHeader from "./kanban-column-hearder";
 
 const boards: TaskStatus[] = [
   TaskStatus.BACKLOG,
@@ -56,7 +57,10 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
               key={board}
               className="flex-1 mx-2 bg-muted p-1.5 rounded-md min-w-[200px]"
             >
-                <KanbanColumnHeader/>
+                <KanbanColumnHeader
+                board={board}
+                taskCount={tasks[board].length}
+                />
             </div>
           );
         })}
