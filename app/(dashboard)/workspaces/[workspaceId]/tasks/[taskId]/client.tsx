@@ -7,6 +7,7 @@ import { TaskBreadCrumbs } from "@/features/tasks/components/task-breadcrumbs";
 import { PageLoader } from "@/components/shared/page-loader";
 import { PageError } from "@/components/shared/page-error";
 import { DottedSeparator } from "@/components/shared/dotted-separator";
+import { TaskOverview } from "@/features/tasks/components/task-overview";
 
 export const TaskIdClient = () => {
     const taskId = useTaskId();
