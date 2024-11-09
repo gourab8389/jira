@@ -6,8 +6,9 @@ import {
   DropResult,
 } from "@hello-pangea/dnd";
 
-import { Task, TaskStatus } from "../types";
 import KanbanColumnHeader from "./kanban-column-hearder";
+
+import { Task, TaskStatus } from "../types";
 
 const boards: TaskStatus[] = [
   TaskStatus.BACKLOG,
