@@ -1,5 +1,6 @@
 import { getCurrent } from '@/features/auth/queries';
 import { redirect } from 'next/navigation';
+import { ProjectIdSettingsClient } from './client';
 
 const ProjectIdSettingsPage = async () => {
     const user = await getCurrent();
@@ -7,8 +8,7 @@ const ProjectIdSettingsPage = async () => {
     if (!user) redirect("/sign-in");
         
   return (
-    <div className='w-full lg:max-w-xl'>
-    </div>
+   <ProjectIdSettingsClient/>
   )
 }
 
