@@ -21,8 +21,8 @@ export const TaskBreadCrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
     const router = useRouter();
     const workspaceId = useWorkspaceId();
 
-    const { mutate } = useDeleteTask();
-    const [ confrimDialog, confrim ] = useConfirm(
+    const { mutate, isPending } = useDeleteTask();
+    const [ ConfirmDialog, confrim ] = useConfirm(
         "Delete task",
         "This action cannot be undone.",
         "destructive",
@@ -42,6 +42,7 @@ export const TaskBreadCrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
 
     return (
         <div className="flex items-center gap-x-2">
+            <ConfirmDialog/>
             <ProjectAvatar
             name={project.name}
             image={project.image}
@@ -57,6 +58,7 @@ export const TaskBreadCrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
             {task.name}
             </p>
             <Button
+            disabled={isPending}
             onClick={handleDeleteTask}
             className="ml-auto"
             size="sm"
