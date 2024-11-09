@@ -10,11 +10,12 @@ import {
 import { enUS } from "date-fns/locale";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 
+import EventCard from "./event-card";
+
 import { Task } from "../types"
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./data-calendar.css";
-import EventCard from "./event-card";
 
 
 const locales = {
