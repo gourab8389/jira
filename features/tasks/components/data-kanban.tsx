@@ -3,7 +3,7 @@ import {
   DragDropContext,
   Droppable,
   Draggable,
-  DropResult,
+  type DropResult,
 } from "@hello-pangea/dnd";
 
 import { KanbanCard } from "./kanban-card";
@@ -50,8 +50,33 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
     return initialTasks;
   });
 
+  const onDragEnd = useCallback((result: DropResult) => {
+    if (!result.destination) return;
+
+    const { source, destination } = result;
+    const sourceStatus = source.droppableId as TaskStatus;
+    const destStatus = destination.droppableId as TaskStatus;
+
+    let updatesPayload: { $id: string; status: TaskStatus; position: number }[] = [];
+
+    setTasks((prevTasks) => {
+        const newTasks = { ...prevTasks };
+
+        // Remove task from source column
+        const sourceColumn = [...newTasks[sourceStatus]];
+        const [movedTask] = sourceColumn.splice(source.index, 1);
+
+        // if there is no moved task (shouldn't happen), return the previous state
+        if(!movedTask) {
+            console.error("No task found at the source index");
+            return prevTasks;
+        }
+    });
+    
+  }, []);
+
   return (
-    <DragDropContext onDragEnd={() => {}}>
+    <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex overflow-x-auto">
         {boards.map((board) => {
           return (
@@ -88,6 +113,7 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
                         )}
                       </Draggable>
                     ))}
+                    {provided.placeholder}
                   </div>
                 )}
               </Droppable>
