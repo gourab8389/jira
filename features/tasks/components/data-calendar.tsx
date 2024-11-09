@@ -14,6 +14,7 @@ import { Task } from "../types"
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./data-calendar.css";
+import EventCard from "./event-card";
 
 
 const locales = {
@@ -74,7 +75,17 @@ const DataCalendar = ({
     formats={{
         weekdayFormat: (date, culture, localizer) => localizer?.format(date, "EEEE", culture) ?? ""
     }}
-
+    components={{
+        eventWrapper: ({ event }) => (
+            <EventCard
+            id={event.id}
+            title={event.title}
+            project={event.project}
+            assignee={event.assignee}
+            status={event.status}
+            />
+        )
+    }}
     />
   )
 }
