@@ -13,6 +13,7 @@ import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { Task } from "../types"
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import "./data-calendar.css";
 
 
 const locales = {
