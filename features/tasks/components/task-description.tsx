@@ -9,51 +9,63 @@ import { Task } from "../types";
 import { useUpdateTask } from "../api/use-update-task";
 
 interface TaskDescriptionProps {
-    task: Task;
+  task: Task;
 }
 
 export const TaskDescription = ({ task }: TaskDescriptionProps) => {
-    const [ isEditing, setIsEditing ] = useState(false);
-    const [ value, setValue ] = useState(task.description);
-    const { mutate, isPending } = useUpdateTask();
+  const [isEditing, setIsEditing] = useState(false);
+  const [value, setValue] = useState(task.description);
+  const { mutate, isPending } = useUpdateTask();
 
-    const handleSave = () => {
-        mutate({
-            json: { description: value },
-            param: { taskId: task.$id }
-        })
-    }
+  const handleSave = () => {
+    mutate({
+      json: { description: value },
+      param: { taskId: task.$id },
+    });
+  };
 
+  return (
+    <div className="p-4 border rounded-lg">
+      <div className="flex items-center justify-between">
+        <p className="text-lg font-semibold">Overview</p>
+        <Button
+          onClick={() => setIsEditing((prev) => !prev)}
+          variant={"secondary"}
+          size={"sm"}
+        >
+          {isEditing ? (
+            <XIcon className="size-4 mr-2" />
+          ) : (
+            <PencilIcon className="size-4 mr-2" />
+          )}
+          {isEditing ? "Cancel" : "Edit"}
+        </Button>
+      </div>
+      <DottedSeparator className="my-4" />
 
-    return (
-        <div className="p-4 border rounded-lg">
-            <div className="flex items-center justify-between">
-                <p className="text-lg font-semibold">
-                    Overview
-                </p>
-                <Button
-                onClick={() => setIsEditing((prev) => !prev)}
-                variant={"secondary"}
-                size={"sm"}
-                >
-                    {isEditing ? (
-                        <XIcon className="size-4 mr-2"/>
-                    ) : (
-                        <PencilIcon className="size-4 mr-2"/>
-                    )}
-                    {isEditing ? "Cancel" : "Edit"}
-                </Button>
-            </div>
-            <DottedSeparator className="my-4"/>
-            <div className="flex flex-col gap-y-4">
-                <div className="">
-                    {task.description || (
-                        <span>
-                            No description provided
-                        </span>
-                    )}
-                </div>
-            </div>
+      {isEditing ? (
+        <div className="flex flex-col gap-y-4">
+            <Textarea
+            placeholder="Add a description"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            rows={4}
+            disabled={isPending}
+            />
+            <Button 
+            size={"sm"} 
+            className="w-fit ml-auto"
+            onClick={handleSave}
+            disabled={isPending}
+            >
+                {isPending ? "Saving..." : "Save changes"}
+            </Button>
         </div>
-    )
-}
+      ) : (
+        <div className="">
+          {task.description || <span>No description provided</span>}
+        </div>
+      )}
+    </div>
+  );
+};
