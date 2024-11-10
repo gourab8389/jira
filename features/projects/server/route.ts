@@ -406,11 +406,11 @@ const app = new Hono()
 
         completedTaskCount,
         completedTaskDifference,
-        
+
         overdueTaskCount,
         overdueTaskDifference,
         },
-    });    
+    });
   });
 
 export default app;
