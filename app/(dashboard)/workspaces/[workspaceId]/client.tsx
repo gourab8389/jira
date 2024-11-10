@@ -6,6 +6,7 @@ import { PlusIcon, CalendarIcon, SettingsIcon } from "lucide-react";
 
 import { Task } from "@/features/tasks/types";
 import { Project } from "@/features/projects/types";
+import { Member } from "@/features/members/types";
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useCreateProjectModal } from "@/features/projects/hooks/use-create-project-modal";
@@ -21,6 +22,8 @@ import { PageError } from "@/components/shared/page-error";
 import { PageLoader } from "@/components/shared/page-loader";
 import { Card, CardContent } from "@/components/ui/card";
 import { DottedSeparator } from "@/components/shared/dotted-separator";
+import { MemberAvatar } from "@/features/members/components/member-avatar";
+
 
 export const WorkspaceIdClient = () => {
   const workspaceId = useWorkspaceId();
@@ -57,10 +60,15 @@ export const WorkspaceIdClient = () => {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <TaskList data={tasks.documents} total={tasks.total} />
         <ProjectList data={projects.documents} total={projects.total} />
+        <MembersList data={members.documents} total={members.total} />
       </div>
     </div>
   );
 };
+
+
+
+// task list
 
 interface TaskListProps {
   data: Task[];
@@ -114,6 +122,10 @@ export const TaskList = ({ data, total }: TaskListProps) => {
   );
 };
 
+
+
+// project list
+
 interface ProjectListProps {
   data: Project[];
   total: number;
@@ -153,7 +165,7 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
             </li>
           ))}
           <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
-            No tasks found
+            No projects found
           </li>
         </ul>
       </div>
@@ -163,6 +175,9 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
 
 
 
+// member list
+
+
 interface MembersListProps {
     data: Member[];
     total: number;
@@ -170,39 +185,41 @@ interface MembersListProps {
   
   export const MembersList = ({ data, total }: MembersListProps) => {
     const workspaceId = useWorkspaceId();
-    const { open: createProject } = useCreateProjectModal();
     return (
       <div className="flex flex-col gap-y-1 col-span-1">
         <div className="bg-white border rounded-lg p-4">
           <div className="flex items-center justify-between">
-            <p className="text-lg font-semibold">Projects ({total})</p>
-            <Button variant={"secondary"} size={"icon"} onClick={createProject}>
-              <PlusIcon className="size-4 text-neutral-400" />
+            <p className="text-lg font-semibold">Members ({total})</p>
+            <Button asChild variant={"secondary"} size={"icon"}>
+              <Link href={`/workspaces/${workspaceId}/members`}>
+                <SettingsIcon className="size-4 text-neutral-400" />
+              </Link>
             </Button>
           </div>
           <DottedSeparator className="my-4" />
-          <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {data.map((project) => (
-              <li key={project.$id}>
-                <Link href={`workspaces/${workspaceId}/projects/${project.$id}`}>
-                  <Card className="shadow-none rounded-lg hover:opacity-75 transition">
-                    <CardContent className="p-4 flex items-center gap-x-2.5">
-                      <ProjectAvatar
-                      className="size-12"
-                      fallbackClassName="text-lg"
-                      name={project.name}
-                      image={project.imageUrl}
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {data.map((member) => (
+              <li key={member.$id}>
+                  <Card className="shadow-none rounded-lg overflow-hidden">
+                    <CardContent className="p-1 flex items-center gap-x-3">
+                      <MemberAvatar
+                      className="size-8"
+                      name={member.name}
                       />
-                      <p className="text-lg font-medium truncate">
-                          {project.name}
-                      </p>
+                      <div className="flex flex-col items-start overflow-hidden">
+                        <p className="text-lg font-medium line-clamp-1">
+                          {member.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {member.email}
+                        </p>
+                      </div>
                     </CardContent>
                   </Card>
-                </Link>
               </li>
             ))}
             <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
-              No tasks found
+              No Members found
             </li>
           </ul>
         </div>
