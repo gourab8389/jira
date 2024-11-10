@@ -67,7 +67,7 @@ interface TaskListProps {
 }
 
 export const TaskList = ({ data, total }: TaskListProps) => {
-    const workspaceId = useWorkspaceId();
+  const workspaceId = useWorkspaceId();
   const { open: createTask } = useCreateTaskModal();
   return (
     <div className="flex flex-col gap-y-1 col-span-1">
@@ -79,21 +79,32 @@ export const TaskList = ({ data, total }: TaskListProps) => {
           </Button>
         </div>
         <DottedSeparator />
+        <ul>
         {data.map((task) => (
-          <ul className="flex flex-col gap-y-4">
+          <li className="flex flex-col gap-y-4">
             <Link href={`workspaces/${workspaceId}/tasks/${task.$id}`}>
-            <Card className="shadow-none rounded-lg hover:opacity-75 transition">
+              <Card className="shadow-none rounded-lg hover:opacity-75 transition">
                 <CardContent className="p-4">
-                    <p className="text-lg font-medium truncate">{task.name}</p>
-                    <div className="flex items-center gap-x-2">
-                        <p>{task.project?.name}</p>
-                        <div className="size-1 rounded-full bg-neutral-300"/>
+                  <p className="text-lg font-medium truncate">{task.name}</p>
+                  <div className="flex items-center gap-x-2">
+                    <p>{task.project?.name}</p>
+                    <div className="size-1 rounded-full bg-neutral-300" />
+                    <div className="text-sm text-muted-foreground flex items-center">
+                      <CalendarIcon className="size-3 mr-1" />
+                      <span className="truncate">
+                        {formatDistanceToNow(new Date(task.dueDate))}
+                      </span>
                     </div>
+                  </div>
                 </CardContent>
-            </Card>
+              </Card>
             </Link>
-          </ul>
+          </li>
         ))}
+        <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
+            No tasks found
+        </li>
+        </ul>
       </div>
     </div>
   );
