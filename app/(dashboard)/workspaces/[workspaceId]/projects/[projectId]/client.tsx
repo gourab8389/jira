@@ -27,7 +27,7 @@ export const ProjectIdClient = () => {
         return <PageLoader/>
     }
 
-    if(!project || !analytics){
+    if(!project){
         return <PageError message="Project not found"/>;
     }
     return (
@@ -50,6 +50,7 @@ export const ProjectIdClient = () => {
               </Button>
           </div>
         </div>
+        <Analytics data={analytics} />
         <TaskViewSwitcher hideProjectFilter />
       </div>
     )

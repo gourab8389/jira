@@ -370,7 +370,7 @@ const app = new Hono()
         [
             Query.equal("projectId", projectId),
             Query.notEqual("status", TaskStatus.DONE),
-            Query.lessThan("$dueDate", now.toISOString()),
+            Query.lessThan("dueDate", now.toISOString()),
             Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
             Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
         ]
@@ -382,7 +382,7 @@ const app = new Hono()
         [
             Query.equal("projectId", projectId),
             Query.notEqual("status", TaskStatus.DONE),
-            Query.lessThan("$dueDate", now.toISOString()),
+            Query.lessThan("dueDate", now.toISOString()),
             Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
             Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
         ]
@@ -397,16 +397,12 @@ const app = new Hono()
       data: {
         taskCount,
         taskDifference,
-
         assignedTaskCount,
         assignedTaskDifference,
-
         incompleteTaskCount,
         incompleteTaskDifference,
-
         completedTaskCount,
         completedTaskDifference,
-
         overdueTaskCount,
         overdueTaskDifference,
         },
