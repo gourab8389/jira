@@ -1,5 +1,6 @@
 "use client";
 
+import { Analytics } from "@/components/analytics/analytics";
 import { PageError } from "@/components/shared/page-error";
 import { PageLoader } from "@/components/shared/page-loader";
 
@@ -25,7 +26,9 @@ export const WorkspaceIdClient = () => {
 
     const isLoading = isLoadingAnalytics || isLoadingTasks || isLoadingProjects || isLoadingMembers;
 
-    if(isLoading){ return <PageLoader/> }
+    if(isLoading){
+         return <PageLoader/> 
+    }
 
     if(!analytics || !tasks || !projects || !members){
         return (
@@ -34,8 +37,13 @@ export const WorkspaceIdClient = () => {
     }
 
     return (
-        <div>
-        Workspace Id
+        <div className="h-full flex flex-col space-y-4">
+            <Analytics data={analytics}/>
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+
+            </div>
         </div>
     )
 }
+
+
