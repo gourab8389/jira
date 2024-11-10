@@ -360,8 +360,57 @@ const app = new Hono()
     const completedTaskCount = thisMonthCompletedTasks.total;
     const completedTaskDifference =
       completedTaskCount - lastMonthCompletedTasks.total;
+    
 
-      
+    // this month and last month overdue tasks
+
+    const thisMonthOverdueTasks = await databases.listDocuments(
+        DATABASE_ID,
+        TASKS_ID,
+        [
+            Query.equal("projectId", projectId),
+            Query.notEqual("status", TaskStatus.DONE),
+            Query.lessThan("$dueDate", now.toISOString()),
+            Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
+            Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
+        ]
+    );
+
+    const lastMonthOverdueTasks = await databases.listDocuments(
+        DATABASE_ID,
+        TASKS_ID,
+        [
+            Query.equal("projectId", projectId),
+            Query.notEqual("status", TaskStatus.DONE),
+            Query.lessThan("$dueDate", now.toISOString()),
+            Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
+            Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
+        ]
+    );
+
+
+    const overdueTaskCount = thisMonthOverdueTasks.total;
+    const overdueTaskDifference = overdueTaskCount - lastMonthOverdueTasks.total;
+
+
+    return c.json({
+      data: {
+        taskCount,
+        taskDifference,
+
+        assignedTaskCount,
+        assignedTaskDifference,
+
+        incompleteTaskCount,
+        incompleteTaskDifference,
+
+        completedTaskCount,
+        completedTaskDifference,
+        
+        overdueTaskCount,
+        overdueTaskDifference,
+        },
+    });    
   });
 
 export default app;
