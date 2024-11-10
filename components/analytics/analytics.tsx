@@ -13,7 +13,7 @@ return (
         <div className="w-full flex flex-row">
             <div className="flex items-center flex-1">
                 <AnalyticsCard
-                title="Toltal tasks"
+                title="Total tasks"
                 value={data.taskCount}
                 variant={data.taskDifference > 0 ? "up" : "down"}
                 increaseValue={data.taskDifference}
