@@ -18,6 +18,14 @@ return (
                 increaseValue={data.taskDifference}
                 />
             </div>
+            <div className="flex items-center flex-1">
+                <AnalyticsCard
+                title="Assigneed tasks"
+                value={data.assignedTaskCount}
+                variant={data.assignedTaskDifference > 0 ? "up" : "down"}
+                increaseValue={data.assignedTaskDifference}
+                />
+            </div>
         </div>
     </ScrollArea>
 );
