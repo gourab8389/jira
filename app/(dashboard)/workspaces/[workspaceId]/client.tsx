@@ -78,10 +78,10 @@ export const TaskList = ({ data, total }: TaskListProps) => {
             <PlusIcon className="size-4 text-neutral-400" />
           </Button>
         </div>
-        <DottedSeparator />
-        <ul>
+        <DottedSeparator  className="my-4"/>
+        <ul className="flex flex-col gap-y-4">
         {data.map((task) => (
-          <li className="flex flex-col gap-y-4">
+          <li key={task.$id}>
             <Link href={`workspaces/${workspaceId}/tasks/${task.$id}`}>
               <Card className="shadow-none rounded-lg hover:opacity-75 transition">
                 <CardContent className="p-4">
@@ -105,7 +105,16 @@ export const TaskList = ({ data, total }: TaskListProps) => {
             No tasks found
         </li>
         </ul>
+        <Button variant={"muted"} className="mt-4 w-full" asChild>
+            <Link href={`/workspaces/${workspaceId}/tasks`}>
+            Show All
+            </Link>
+        </Button>
       </div>
     </div>
   );
 };
+
+
+
+
